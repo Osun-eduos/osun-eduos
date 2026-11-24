@@ -1,6 +1,8 @@
-# Proposed architecture
+# Architecture
 
-This document describes the intended production architecture. The current prototype ([eduos-web](https://github.com/Osun-eduos/eduos-web)) is front-end only and keeps all data in memory. Everything below is a proposal for discussion, not a description of shipped code.
+This document describes the production architecture. Parts are built and running; the rest is planned. The **Status** column in the table below shows which is which. The clickable prototype in [eduos-web](https://github.com/Osun-eduos/eduos-web) (`prototype/`) is separate, front-end only and keeps its sample data in memory.
+
+Decisions are recorded in [docs/decisions](decisions/). Start with [0001 · Programming languages and where each service lives](decisions/0001-languages-and-services.md).
 
 ## Goals
 
@@ -15,11 +17,13 @@ This document describes the intended production architecture. The current protot
 ```
  Teacher apps (Android, iOS; offline)     Web app (schools, Ministry, parents)
         │  encrypted local store             │
-        └──────────── sync API ──────────────┘
-                         │
-                  Application API
-       (auth, roles, validation, workflows, audit log)
-                         │
+        │                                    │
+   Sync service (Go)                  Application API (TypeScript, NestJS)
+   offline uploads from phones        auth, roles, validation, workflows, audit log
+        │                                    │
+        └──────────────┬─────────────────────┘
+                       │        Job workers (Go): results, report cards, SMS
+                       │
         ┌────────────────┼──────────────────┐
    PostgreSQL + PostGIS   Object storage    Job queue
    (records, GIS)        (documents, photos) (SMS, reports, sync)
@@ -27,23 +31,26 @@ This document describes the intended production architecture. The current protot
               Analytics store and dashboards
 ```
 
-| Layer | Proposed technology | Notes |
+| Layer | Technology | Status |
 | --- | --- | --- |
-| Web front end | TypeScript, React or Svelte, PWA | Same UI patterns as the prototype; installable; works on 3G |
-| Mobile apps | Kotlin + Jetpack Compose (Android), Swift + SwiftUI (iOS) | Native apps with the same behaviour: offline queue, encrypted SQLite (SQLCipher), background sync |
-| API | Node.js (NestJS) or Python (Django) | REST/JSON, OpenAPI spec, idempotent sync endpoints |
-| Database | PostgreSQL 16 + PostGIS | Row-level security per school and LGA |
-| Analytics | Materialised views or a separate warehouse (e.g. ClickHouse), Apache Superset or Metabase | Ministry dashboards and indicator reports |
+| Web front end | TypeScript, React, Vite | **Built:** accounts, schools, students, classes, transfers. Installable PWA planned. |
+| Mobile apps | Kotlin + Jetpack Compose (Android), Swift + SwiftUI (iOS) | Planned. Offline queue, encrypted SQLite (SQLCipher), background sync. |
+| Core API | TypeScript, NestJS, Prisma | **Built:** REST/JSON. Accounts, schools, sessions, classes, students, transfers. |
+| Sync service | Go | Planned, when the mobile apps need it. Idempotent uploads from phones. See [decision 0001](decisions/0001-languages-and-services.md). |
+| Job workers | Go | Planned. Results processing, report cards, SMS sending. |
+| Database | PostgreSQL 16 (PostGIS later) | **Built.** One database shared by all services; the schema and migrations live in `eduos-api`. |
+| Analytics | SQL views and materialised views in PostgreSQL first; a Go service or a warehouse only if needed | Planned. Ministry dashboards and indicator reports. |
 | Messaging | Pluggable SMS gateway, push notifications | Parents without smartphones get SMS only |
-| Auth | OpenID Connect (Keycloak) | Roles: teacher, school admin, principal, LGA officer, Ministry officer, inspector, parent |
-| Hosting | Containers (Docker), state data centre or a Nigerian cloud region | Static front end can sit on a CDN |
+| Auth | Built into `eduos-api`: Argon2id passwords, short-lived JWT access tokens, rotating refresh tokens | **Built.** Roles: Ministry administrator, Ministry officer, school administrator, teacher, parent. LGA officer and inspector roles to come. Go services accept the same tokens. |
+| Hosting | Containers (Docker), state data centre or a Nigerian cloud region | Static front end can sit on a CDN. |
 
 ## Repositories
 
 | Repository | Holds |
 | --- | --- |
-| [eduos-web](https://github.com/Osun-eduos/eduos-web) | Web app for the Ministry, schools, teachers and parents (today: the clickable prototype) |
-| [eduos-api](https://github.com/Osun-eduos/eduos-api) | Application API, database schema, sync endpoints, notifications |
+| [eduos-web](https://github.com/Osun-eduos/eduos-web) | Web app for the Ministry, schools, teachers and parents, and the clickable prototype |
+| [eduos-api](https://github.com/Osun-eduos/eduos-api) | Core API (TypeScript) and the database schema and migrations for every service |
+| `eduos-sync` (to be created) | Sync service for the mobile apps (Go) |
 | [eduos-android](https://github.com/Osun-eduos/eduos-android) | Offline-first Android app for teachers and inspectors |
 | [eduos-ios](https://github.com/Osun-eduos/eduos-ios) | Offline-first iOS app for teachers and inspectors |
 | [osun-eduos](https://github.com/Osun-eduos/osun-eduos) | Architecture, roadmap and project-wide decisions |
@@ -55,8 +62,10 @@ Analytics, infrastructure-as-code and shared specifications (data model, OpenAPI
 
 - **School**: school number, name, LGA, level, ownership, GPS point, facilities, status.
 - **Session / Term**: dates and state (upcoming, active, closed). Closing a term locks entry.
-- **Student**: admission number, biodata, guardian contacts, current enrolment (school, class arm), status.
-- **Enrolment history**: one row per student per term and school. Transfers close one row and open another, so history follows the student.
+- **Student**: state-wide learner ID for life, biodata, linked parent accounts, current school, status.
+- **Enrolment**: one row per student per school, with that school's admission number. Transfers close one row and open another, so history follows the student.
+- **Class and placement**: class arms per school and session (for example JSS 2A) and one placement per student per session.
+- **Transfer**: requested by the sending school, accepted or declined by the receiving school.
 - **Teacher**: TRCN number, qualifications, subjects, current posting, posting history, training records.
 - **Assessment setup**: components (e.g. CA 1, CA 2, Exam) with maximum marks per level and term; exam timetable.
 - **Score**: student × subject × component × term, with entered-by, device and timestamps.

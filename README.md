@@ -36,6 +36,7 @@ In many schools, examination results are still compiled by hand. Teachers calcul
 
 - [Architecture](docs/architecture.md): components, data model, offline sync, security and privacy.
 - [Roadmap](docs/roadmap.md): phases from prototype to state-wide rollout.
+- [Decisions](docs/decisions/): recorded technical decisions, starting with [programming languages and services](docs/decisions/0001-languages-and-services.md).
 
 ## Get involved
 
