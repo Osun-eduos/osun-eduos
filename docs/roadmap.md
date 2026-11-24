@@ -8,21 +8,21 @@ Timelines are indicative and depend on funding, team size and Ministry prioritie
 - Public demo at https://osun-eduos.pages.dev.
 - Stakeholder walkthroughs with the Ministry, school heads and teachers.
 
-## Phase 1 · Core registry and results
+## Phase 1 · Core registry and results (software done, pilot next)
 
-- Production API, database and authentication with roles.
-- School registration and school numbers; academic sessions and terms.
-- Student records, enrolment and class allocation.
-- Exam setup, score entry (web), grading systems, report cards.
-- School approval and electronic submission to the Ministry.
+- ✅ Production API, database and authentication with roles (milestone 1).
+- ✅ School registration and school numbers; academic sessions and terms (milestones 1 and 4).
+- ✅ Student records, enrolment and class allocation (milestone 2).
+- ✅ Exam setup, score entry (web), grading systems, report cards (milestone 4).
+- ✅ School approval and electronic submission to the Ministry (milestone 4).
 - Pilot in a small number of schools in a few LGAs.
 
 ## Phase 2 · Offline app and day-to-day operations
 
 - Android teacher app with offline score entry and attendance, encrypted local storage and sync.
 - iOS teacher app with the same features, following the Android release.
-- Daily attendance and absence SMS to guardians.
-- Student transfers between schools.
+- ✅ Daily attendance on the web (milestone 3); absence SMS to guardians still to come.
+- ✅ Student transfers between schools (milestone 2).
 - Teacher registry, postings and training records.
 - Infrastructure inspections with the mobile app.
 
