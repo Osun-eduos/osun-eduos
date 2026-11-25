@@ -30,7 +30,7 @@ The teacher app is built **once, in Flutter (Dart)**, for both Android and iOS, 
 ## Trade-offs
 
 - **App size.** A Flutter app is somewhat larger than a minimal native one. Per-ABI APKs and Play Store app bundles keep downloads reasonable.
-- **Platform features.** Deep platform features (background work scheduling, device management) go through plugins. Background sync when the app is closed is not built yet. Today the app syncs when opened, when it reconnects, every 10 minutes while open, and on demand.
+- **Platform features.** Deep platform features (background work scheduling, device management) go through plugins. Background sync uses Android WorkManager and iOS BGTaskScheduler through the `workmanager` plugin: about every 30 minutes when online, at times the operating system chooses to save battery.
 - **Another language.** Dart joins TypeScript and Go. It is a small, familiar language for anyone who knows TypeScript.
 
 The Rust option in decision 0001 (sharing sync and encryption code between the server and the apps) is no longer relevant, because the apps do not run Rust. If code is ever shared, it would be the sync protocol definition, not an implementation.
