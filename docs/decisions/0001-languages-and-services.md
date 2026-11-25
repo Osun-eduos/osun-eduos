@@ -23,7 +23,7 @@ We considered TypeScript, Go and Rust for this work.
 | Sync service for the Android and iOS apps (`eduos-sync`, when the apps need it) | **Go** | Many concurrent connections, idempotent writes and steady memory use under load. Single-binary deployment on modest servers. |
 | Bulk jobs: results processing, report cards, SMS sending | **Go** | Long-running and parallel work that should not slow down the core API. |
 | State analytics | **SQL in PostgreSQL first** (views and materialised views), **Go** if a dedicated service is needed | Most indicators are aggregations the database already does well. |
-| Shared offline sync and encryption library | **Rust, only if adopted** | Considered only if we decide one library should run on the server and inside both mobile apps. Not planned today. |
+| Shared offline sync and encryption library | ~~Rust, only if adopted~~ | No longer relevant: the mobile app is built in Flutter ([decision 0002](0002-flutter-for-mobile-apps.md)). |
 
 Rules that go with this:
 

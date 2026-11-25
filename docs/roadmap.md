@@ -19,8 +19,7 @@ Timelines are indicative and depend on funding, team size and Ministry prioritie
 
 ## Phase 2 · Offline app and day-to-day operations
 
-- Android teacher app with offline score entry and attendance, encrypted local storage and sync.
-- iOS teacher app with the same features, following the Android release.
+- ✅ Teacher app (Flutter, Android and iOS) with offline score entry and attendance, encrypted local storage, and the Go sync service. Background sync when the app is closed is still to come.
 - ✅ Daily attendance on the web (milestone 3); absence SMS to guardians still to come.
 - ✅ Student transfers between schools (milestone 2).
 - Teacher registry, postings and training records.

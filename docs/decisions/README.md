@@ -5,3 +5,4 @@ Short records of technical decisions that shape the whole project: what we chose
 | No. | Decision | Status |
 | --- | --- | --- |
 | [0001](0001-languages-and-services.md) | Programming languages and where each service lives | Accepted |
+| [0002](0002-flutter-for-mobile-apps.md) | Flutter for the mobile apps | Accepted |

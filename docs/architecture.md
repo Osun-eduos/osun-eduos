@@ -2,7 +2,7 @@
 
 This document describes the production architecture. Parts are built and running; the rest is planned. The **Status** column in the table below shows which is which. The clickable prototype in [eduos-web](https://github.com/Osun-eduos/eduos-web) (`prototype/`) is separate, front-end only and keeps its sample data in memory.
 
-Decisions are recorded in [docs/decisions](decisions/). Start with [0001 · Programming languages and where each service lives](decisions/0001-languages-and-services.md).
+Decisions are recorded in [docs/decisions](decisions/): [0001 · Programming languages and where each service lives](decisions/0001-languages-and-services.md) and [0002 · Flutter for the mobile apps](decisions/0002-flutter-for-mobile-apps.md).
 
 ## Goals
 
@@ -34,7 +34,7 @@ Decisions are recorded in [docs/decisions](decisions/). Start with [0001 · Prog
 | Layer | Technology | Status |
 | --- | --- | --- |
 | Web front end | TypeScript, React, Vite | **Built:** accounts, schools, students, classes, transfers. Installable PWA planned. |
-| Mobile apps | Kotlin + Jetpack Compose (Android), Swift + SwiftUI (iOS) | Planned. Offline queue, encrypted SQLite (SQLCipher), background sync. |
+| Mobile app | Flutter (Dart), one codebase for Android and iOS | **Built:** teacher app with offline register and score entry, encrypted SQLite (SQLCipher), ordered sync. See [decision 0002](decisions/0002-flutter-for-mobile-apps.md). |
 | Core API | TypeScript, NestJS, Prisma | **Built:** REST/JSON. Accounts, schools, sessions, classes, students, transfers. |
 | Sync service | Go | **Built:** snapshot for offline work, exactly-once uploads applied through the core API. See [decision 0001](decisions/0001-languages-and-services.md). |
 | Job workers | Go | Planned. Results processing, report cards, SMS sending. |
@@ -51,8 +51,7 @@ Decisions are recorded in [docs/decisions](decisions/). Start with [0001 · Prog
 | [eduos-web](https://github.com/Osun-eduos/eduos-web) | Web app for the Ministry, schools, teachers and parents, and the clickable prototype |
 | [eduos-api](https://github.com/Osun-eduos/eduos-api) | Core API (TypeScript) and the database schema and migrations for every service |
 | [eduos-sync](https://github.com/Osun-eduos/eduos-sync) | Sync service for the mobile apps (Go) |
-| [eduos-android](https://github.com/Osun-eduos/eduos-android) | Offline-first Android app for teachers and inspectors |
-| [eduos-ios](https://github.com/Osun-eduos/eduos-ios) | Offline-first iOS app for teachers and inspectors |
+| [eduos-mobile](https://github.com/Osun-eduos/eduos-mobile) | Offline-first Flutter app for teachers (and later inspectors), for Android and iOS |
 | [osun-eduos](https://github.com/Osun-eduos/osun-eduos) | Architecture, roadmap and project-wide decisions |
 | [.github](https://github.com/Osun-eduos/.github) | Organisation profile and shared community files |
 

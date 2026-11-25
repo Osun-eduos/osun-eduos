@@ -28,15 +28,15 @@ In many schools, examination results are still compiled by hand. Teachers calcul
 | **osun-eduos** (this one) | Overview, architecture, roadmap, project-wide decisions | Active |
 | [eduos-web](https://github.com/Osun-eduos/eduos-web) | Web app for the Ministry, schools, teachers and parents | Clickable prototype |
 | [eduos-api](https://github.com/Osun-eduos/eduos-api) | Application API, database and sync service | Planned |
-| [eduos-android](https://github.com/Osun-eduos/eduos-android) | Offline-first Android app for teachers and inspectors | Planned |
-| [eduos-ios](https://github.com/Osun-eduos/eduos-ios) | Offline-first iOS app for teachers and inspectors | Planned |
+| [eduos-mobile](https://github.com/Osun-eduos/eduos-mobile) | Teacher app for Android and iOS (Flutter): offline register and score entry | Active |
+| [eduos-sync](https://github.com/Osun-eduos/eduos-sync) | Sync service for the mobile app (Go) | Active |
 | [.github](https://github.com/Osun-eduos/.github) | Organisation profile and shared community files | Active |
 
 ## Documents
 
 - [Architecture](docs/architecture.md): components, data model, offline sync, security and privacy.
 - [Roadmap](docs/roadmap.md): phases from prototype to state-wide rollout.
-- [Decisions](docs/decisions/): recorded technical decisions, starting with [programming languages and services](docs/decisions/0001-languages-and-services.md).
+- [Decisions](docs/decisions/): recorded technical decisions, including [programming languages and services](docs/decisions/0001-languages-and-services.md) and [Flutter for the mobile apps](docs/decisions/0002-flutter-for-mobile-apps.md).
 
 ## Get involved
 
