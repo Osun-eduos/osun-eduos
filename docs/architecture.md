@@ -41,7 +41,7 @@ Decisions are recorded in [docs/decisions](decisions/): [0001 · Programming lan
 | Database | PostgreSQL 16 (PostGIS later) | **Built.** One database shared by all services; the schema and migrations live in `eduos-api`. |
 | Analytics | SQL views and materialised views in PostgreSQL first; a Go service or a warehouse only if needed | Planned. Ministry dashboards and indicator reports. |
 | Messaging | Pluggable SMS gateway, push notifications | Parents without smartphones get SMS only |
-| Auth | Built into `eduos-api`: Argon2id passwords, short-lived JWT access tokens, rotating refresh tokens | **Built.** Roles: Ministry administrator, Ministry officer, school administrator, teacher, parent. LGA officer and inspector roles to come. Go services accept the same tokens. |
+| Auth | Built into `eduos-api`: Argon2id passwords, short-lived JWT access tokens, rotating refresh tokens | **Built.** Roles: Ministry administrator, Ministry officer, LGA education officer and school inspector (read only, limited to an LGA), school administrator, teacher, parent. Go services accept the same tokens. |
 | Hosting | Containers (Docker), state data centre or a Nigerian cloud region | Static front end can sit on a CDN. |
 
 ## Repositories

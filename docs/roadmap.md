@@ -15,6 +15,7 @@ Timelines are indicative and depend on funding, team size and Ministry prioritie
 - ✅ Student records, enrolment and class allocation (milestone 2).
 - ✅ Exam setup, score entry (web), grading systems, report cards (milestone 4).
 - ✅ School approval and electronic submission to the Ministry (milestone 4).
+- ✅ LGA education officer and school inspector accounts (read only, limited to an LGA), state holidays, and student import from spreadsheets.
 - Pilot in a small number of schools in a few LGAs.
 
 ## Phase 2 · Offline app and day-to-day operations
