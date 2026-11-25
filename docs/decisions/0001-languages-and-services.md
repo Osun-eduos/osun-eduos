@@ -47,6 +47,10 @@ Rust is the fastest and safest of the three, and it is the only one that could s
 
 We will revisit Rust if the mobile apps and the sync service need to share one implementation of the sync protocol or the on-device encryption.
 
+## Addendum, 2026-11-25: how the sync service writes
+
+When building [eduos-sync](https://github.com/Osun-eduos/eduos-sync) we refined rule 1. The sync service **reads** the teacher's working set directly from PostgreSQL, which is fast and keeps phones' downloads small. It **writes** by calling eduos-api with the teacher's own access token, rather than writing registers and scores itself. This keeps every school rule (edit windows, class rolls, score limits, approval and release) in one place, so the web app and the mobile apps can never disagree. The sync service adds what phones need on top: batching, exactly-once delivery (the `SyncEvent` table), and ordered retries during outages. If load later requires it, individual writes can move into Go once their rules are covered by shared tests.
+
 ## Consequences
 
 - Contributors to the core API and the web app need TypeScript only.

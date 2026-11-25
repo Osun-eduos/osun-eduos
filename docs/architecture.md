@@ -36,7 +36,7 @@ Decisions are recorded in [docs/decisions](decisions/). Start with [0001 · Prog
 | Web front end | TypeScript, React, Vite | **Built:** accounts, schools, students, classes, transfers. Installable PWA planned. |
 | Mobile apps | Kotlin + Jetpack Compose (Android), Swift + SwiftUI (iOS) | Planned. Offline queue, encrypted SQLite (SQLCipher), background sync. |
 | Core API | TypeScript, NestJS, Prisma | **Built:** REST/JSON. Accounts, schools, sessions, classes, students, transfers. |
-| Sync service | Go | Planned, when the mobile apps need it. Idempotent uploads from phones. See [decision 0001](decisions/0001-languages-and-services.md). |
+| Sync service | Go | **Built:** snapshot for offline work, exactly-once uploads applied through the core API. See [decision 0001](decisions/0001-languages-and-services.md). |
 | Job workers | Go | Planned. Results processing, report cards, SMS sending. |
 | Database | PostgreSQL 16 (PostGIS later) | **Built.** One database shared by all services; the schema and migrations live in `eduos-api`. |
 | Analytics | SQL views and materialised views in PostgreSQL first; a Go service or a warehouse only if needed | Planned. Ministry dashboards and indicator reports. |
@@ -50,7 +50,7 @@ Decisions are recorded in [docs/decisions](decisions/). Start with [0001 · Prog
 | --- | --- |
 | [eduos-web](https://github.com/Osun-eduos/eduos-web) | Web app for the Ministry, schools, teachers and parents, and the clickable prototype |
 | [eduos-api](https://github.com/Osun-eduos/eduos-api) | Core API (TypeScript) and the database schema and migrations for every service |
-| `eduos-sync` (to be created) | Sync service for the mobile apps (Go) |
+| [eduos-sync](https://github.com/Osun-eduos/eduos-sync) | Sync service for the mobile apps (Go) |
 | [eduos-android](https://github.com/Osun-eduos/eduos-android) | Offline-first Android app for teachers and inspectors |
 | [eduos-ios](https://github.com/Osun-eduos/eduos-ios) | Offline-first iOS app for teachers and inspectors |
 | [osun-eduos](https://github.com/Osun-eduos/osun-eduos) | Architecture, roadmap and project-wide decisions |
