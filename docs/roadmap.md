@@ -33,6 +33,10 @@ Timelines are indicative and depend on funding, team size and Ministry prioritie
 - ✅ Parent portal on the web and in the app, with notifications (inbox, SMS, and push once Firebase is set up). Student logins to follow.
 - ✅ Archive of past sessions.
 
+## Prototype parity (done)
+
+Every screen in the original prototype (osun-eduos.pages.dev) now exists in the product: school profiles with maps, results submission tracking and class analysis, editable grading, exam timetables, class allocation, verifiable report cards, staff register and clock-in, training and subject-shortage figures, minimum infrastructure standards with follow-up, enrolment ratios from population estimates, LGA comparisons over terms, and a fuller parent portal.
+
 ## Phase 4 · State-wide rollout
 
 - Training for teachers, school administrators and LGA officers.
