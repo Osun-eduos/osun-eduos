@@ -52,6 +52,13 @@ Point the app at the live servers in one of two ways:
 
 For APKs that can be published, add the upload key secrets too (see *Release signing* in the eduos-mobile README).
 
+## Absence texts and inspection photos
+
+Both work without these settings (texts are recorded but not sent; photos are kept in the database), so the pilot can start first. On the API service in Render, under *Environment*:
+
+- **Texts (KudiSMS):** in your KudiSMS dashboard, register a **corporate sender ID** (up to 11 characters, e.g. `OsunEduOS`) and wait for approval, then copy the API key from the developers section. Set `KUDISMS_TOKEN` and `KUDISMS_SENDER_ID`. Then send a test from *Text messages* in the web app. Keep the KudiSMS account topped up; the Ministry sees the balance on that page.
+- **Photos (S3-compatible storage):** create a private bucket, for example in Cloudflare R2, and an access key limited to that bucket. Set `S3_BUCKET`, `S3_ENDPOINT` (for R2: `https://<account id>.r2.cloudflarestorage.com`), `S3_ACCESS_KEY_ID` and `S3_SECRET_ACCESS_KEY`. Photos added before this stay in the database and still display.
+
 ## Updates and backups
 
 - **Deploys:** every push to `main` in eduos-api, eduos-sync or eduos-web deploys that service automatically. The API applies new database migrations before it starts.

@@ -21,10 +21,10 @@ Timelines are indicative and depend on funding, team size and Ministry prioritie
 ## Phase 2 · Offline app and day-to-day operations
 
 - ✅ Teacher app (Flutter, Android and iOS) with offline score entry and attendance, encrypted local storage, background sync, and the Go sync service.
-- ✅ Daily attendance on the web (milestone 3); absence SMS to guardians still to come.
+- ✅ Daily attendance on the web (milestone 3), with absence texts to parents through KudiSMS.
 - ✅ Student transfers between schools (milestone 2).
-- Teacher registry, postings and training records.
-- Infrastructure inspections with the mobile app.
+- ✅ Staff registry, postings and transfers, qualifications and training records.
+- ✅ Infrastructure inspections with photos on the mobile app, for inspectors and LGA officers.
 
 ## Phase 3 · Intelligence and parents
 

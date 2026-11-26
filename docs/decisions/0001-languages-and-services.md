@@ -51,6 +51,10 @@ We will revisit Rust if the mobile apps and the sync service need to share one i
 
 When building [eduos-sync](https://github.com/Osun-eduos/eduos-sync) we refined rule 1. The sync service **reads** the teacher's working set directly from PostgreSQL, which is fast and keeps phones' downloads small. It **writes** by calling eduos-api with the teacher's own access token, rather than writing registers and scores itself. This keeps every school rule (edit windows, class rolls, score limits, approval and release) in one place, so the web app and the mobile apps can never disagree. The sync service adds what phones need on top: batching, exactly-once delivery (the `SyncEvent` table), and ordered retries during outages. If load later requires it, individual writes can move into Go once their rules are covered by shared tests.
 
+## Addendum, 2026-11-26: inspections go straight to the API
+
+Inspection visits and photos from the mobile app are sent to eduos-api directly, not through eduos-sync. Inspectors are few, their uploads are occasional, and photos are files rather than the small ordered changes the sync service batches. Each visit and photo carries an id made on the phone, so retries after a dropped connection are saved once, which is the property the sync service would otherwise provide. If inspection volume grows, uploads can move behind eduos-sync without changing the app's offline design.
+
 ## Consequences
 
 - Contributors to the core API and the web app need TypeScript only.
