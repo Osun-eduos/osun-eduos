@@ -59,6 +59,14 @@ Both work without these settings (texts are recorded but not sent; photos are ke
 - **Texts (KudiSMS):** in your KudiSMS dashboard, register a **corporate sender ID** (up to 11 characters, e.g. `OsunEduOS`) and wait for approval, then copy the API key from the developers section. Set `KUDISMS_TOKEN` and `KUDISMS_SENDER_ID`. Then send a test from *Text messages* in the web app. Keep the KudiSMS account topped up; the Ministry sees the balance on that page.
 - **Photos (S3-compatible storage):** create a private bucket, for example in Cloudflare R2, and an access key limited to that bucket. Set `S3_BUCKET`, `S3_ENDPOINT` (for R2: `https://<account id>.r2.cloudflarestorage.com`), `S3_ACCESS_KEY_ID` and `S3_SECRET_ACCESS_KEY`. Photos added before this stay in the database and still display.
 
+## Push notifications for parents (optional)
+
+Parents already get an inbox and SMS. To also push notifications to the parent app:
+
+1. Create a Firebase project at console.firebase.google.com, and add an Android app with the package name `org.osuneduos.teacher` (and an iOS app with the same bundle ID once the Apple Developer account is ready).
+2. In *Project settings* > *Service accounts*, generate a private key. Paste the whole JSON file into `FIREBASE_SERVICE_ACCOUNT` on the API in Render.
+3. In GitHub, `Osun-eduos/eduos-mobile` > *Settings* > *Secrets and variables* > *Actions* > *Variables*, add `FIREBASE_API_KEY`, `FIREBASE_PROJECT_ID`, `FIREBASE_SENDER_ID` and `FIREBASE_ANDROID_APP_ID` from the Android app's settings. The next APKs have push switched on.
+
 ## Updates and backups
 
 - **Deploys:** every push to `main` in eduos-api, eduos-sync or eduos-web deploys that service automatically. The API applies new database migrations before it starts.

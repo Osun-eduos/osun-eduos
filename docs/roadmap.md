@@ -28,10 +28,10 @@ Timelines are indicative and depend on funding, team size and Ministry prioritie
 
 ## Phase 3 · Intelligence and parents
 
-- Ministry dashboards, LGA comparisons and trends.
-- Education development indicators and exportable reports.
-- Parent and student portal with results, attendance and notifications.
-- Historical records archive.
+- ✅ Ministry dashboards, LGA comparisons and trends.
+- ✅ Education indicators (enrolment by sex, gender parity, pupils per teacher, qualified teachers, attendance, pass rates, school condition) with Excel, PDF and CSV reports.
+- ✅ Parent portal on the web and in the app, with notifications (inbox, SMS, and push once Firebase is set up). Student logins to follow.
+- ✅ Archive of past sessions.
 
 ## Phase 4 · State-wide rollout
 
