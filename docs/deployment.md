@@ -1,6 +1,6 @@
 # Deploying Osun EduOS for a pilot
 
-This guide puts the real system online on [Render](https://render.com): the database, the API, the sync service for the mobile app, and the web app. It takes about 30 minutes, most of it waiting for builds. Everything is described in [`render.yaml`](https://github.com/Osun-eduos/eduos-api/blob/main/render.yaml) in eduos-api, so the same setup can be recreated at any time.
+This guide puts the real system online: the database, the API and the sync service for the mobile app on [Render](https://render.com), and the web app on [Cloudflare Pages](https://pages.cloudflare.com). It takes about 30 minutes, most of it waiting for builds. The Render side is described in [`render.yaml`](https://github.com/Osun-eduos/eduos-api/blob/main/render.yaml) in eduos-api and the Cloudflare side in [`wrangler.toml`](https://github.com/Osun-eduos/eduos-web/blob/main/wrangler.toml) in eduos-web, so the same setup can be recreated at any time.
 
 The clickable prototype stays on Cloudflare Pages at https://osun-eduos.pages.dev and is not affected.
 
@@ -11,25 +11,47 @@ The clickable prototype stays on Cloudflare Pages at https://osun-eduos.pages.de
 | Database `osun-eduos-db` | private only | `0.1c-256mb` | PostgreSQL 16 with daily backups |
 | API `osun-eduos-api` | https://osun-eduos-api.onrender.com | `0.5c-512mb` | Applies database migrations on every deploy |
 | Sync `osun-eduos-sync` | https://osun-eduos-sync.onrender.com | `0.5c-512mb` | Used by the mobile app |
-| Web app `osun-eduos-web` | https://osun-eduos-web.onrender.com | Static (free) | Calls the API through `/api` on its own address |
+| Web app `osun-eduos-app` | https://osun-eduos-app.pages.dev | Cloudflare Pages (free) | Calls the API through `/api` on its own address |
 
-Expect roughly **US$20 to 30 a month**; Render shows the exact price before you apply the Blueprint. The plans can be changed later in each service's settings. All services run in Render's **Frankfurt** region, the closest to Nigeria. Before real student data goes in, confirm with the Ministry that hosting outside Nigeria is acceptable under the Nigeria Data Protection Act. The same containers can later move to a State data centre or a Nigerian cloud region.
+Expect roughly **US$20 to 30 a month** on Render; Render shows the exact price before you apply the Blueprint. The plans can be changed later in each service's settings. All services run in Render's **Frankfurt** region, the closest to Nigeria. Before real student data goes in, confirm with the Ministry that hosting outside Nigeria is acceptable under the Nigeria Data Protection Act. The same containers can later move to a State data centre or a Nigerian cloud region.
 
 ## Steps
 
 1. **Create a Render account** at https://dashboard.render.com and sign in with GitHub. Use an account the Ministry controls in the long run. Add a payment method under *Billing*.
 2. **Give Render access** to the `Osun-eduos` organisation when GitHub asks: allow `eduos-api`, `eduos-sync` and `eduos-web`.
-3. **New > Blueprint**, choose `Osun-eduos/eduos-api`, and keep the blueprint name. Render reads `render.yaml` and lists the four resources.
+3. **New > Blueprint**, choose `Osun-eduos/eduos-api`, and keep the blueprint name. Render reads `render.yaml` and lists the three resources.
 4. Render asks for three values for the **first Ministry administrator**:
    - `SEED_ADMIN_NAME`: their full name.
    - `SEED_ADMIN_EMAIL`: the email they will sign in with.
    - `SEED_ADMIN_PASSWORD`: a **temporary** password of at least 8 characters, with letters and a number. They must change it the first time they sign in.
 5. **Apply.** The database starts first, then the three services build. The first build takes 5 to 10 minutes.
 6. When `osun-eduos-api` shows **Live**, open https://osun-eduos-api.onrender.com/health. It should say `{"status":"ok"}`.
-7. Open the web app at https://osun-eduos-web.onrender.com and sign in as the Ministry administrator. Choose a new password when asked.
+7. Put the web app on Cloudflare Pages (next section), open https://osun-eduos-app.pages.dev and sign in as the Ministry administrator. Choose a new password when asked.
 8. In Render, open `osun-eduos-api` > *Environment*, **delete** `SEED_ADMIN_NAME`, `SEED_ADMIN_EMAIL` and `SEED_ADMIN_PASSWORD`, and save. They are no longer needed. The administrator is created only once, even if the values stay.
 
-If Render gives a service a different address because the name is taken, update the `/api` rewrite and `WEB_ORIGIN` in `render.yaml` to match, and use the new addresses for the mobile app below.
+If Render gives a service a different address because the name is taken, update `API_ORIGIN` in `eduos-web/wrangler.toml`, and use the new addresses for the mobile app below.
+
+## The web app on Cloudflare Pages
+
+The web app is a static site plus one small Cloudflare function (`functions/api/[[path]].ts`) that passes `/api/*` on to the API. The browser only ever talks to the web app's address, so the sign-in cookie stays first-party and no cross-site settings are needed.
+
+**First deploy, from a Mac or PC** with Node 22 and a Cloudflare account:
+
+```
+cd eduos-web
+npm ci && npm run build
+npx wrangler@4.161.0 login
+npx wrangler@4.161.0 pages project create osun-eduos-app --production-branch=main
+npx wrangler@4.161.0 pages deploy --branch=main
+```
+
+Wrangler reads the project name, the `dist` folder and the API address from `wrangler.toml`. The site is then at https://osun-eduos-app.pages.dev. To use your own domain, add it under the project's *Custom domains* in Cloudflare, then add that address to `WEB_ORIGIN` on the API in Render (comma-separated).
+
+**Automatic deploys from GitHub** (optional): in `Osun-eduos/eduos-web` > *Settings* > *Secrets and variables* > *Actions*, add the secrets `CLOUDFLARE_API_TOKEN` (a token with *Cloudflare Pages: Edit*) and `CLOUDFLARE_ACCOUNT_ID`, and the variable `CLOUDFLARE_DEPLOY_APP` = `true`. Every push to `main` then builds and deploys the app. Set `CLOUDFLARE_PAGES_PROJECT` = `osun-eduos` as well to redeploy the prototype when it changes.
+
+Cloudflare's free plan allows 100,000 function requests a day, which covers a pilot. For state-wide use, move the Cloudflare account to the Workers Paid plan (about US$5 a month for 10 million requests).
+
+`TRUST_PROXY` is `2` on the API because web requests pass through Cloudflare and then Render; this lets the sign-in rate limit see each visitor's own address. Accounts are also locked after repeated wrong passwords, so a visitor who disguises their address still cannot guess passwords.
 
 ## Set up the pilot
 
