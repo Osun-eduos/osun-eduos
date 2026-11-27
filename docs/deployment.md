@@ -23,10 +23,11 @@ Expect roughly **US$20 to 30 a month** on Render; Render shows the exact price b
 4. **Make the token-signing keys** on your own computer, in a copy of eduos-api: `npm run keys`. It prints two lines. Render asks for these values:
    - `JWT_PRIVATE_KEY` on `osun-eduos-api`: the first line's value. Keep it secret; anyone who has it can sign in as anyone.
    - `JWT_PUBLIC_KEY` on `osun-eduos-sync`: the second line's value. It can check tokens but not create them.
+   - `MFA_ENCRYPTION_KEY` is made by Render, so leave it as it is. It encrypts two-step sign-in secrets; never change it, or everyone would have to set up two-step sign-in again.
    - For the **first Ministry administrator**, `SEED_ADMIN_NAME` (their full name), `SEED_ADMIN_EMAIL` (the email they will sign in with) and `SEED_ADMIN_PASSWORD` (a **temporary** password; they must change it the first time they sign in, to one of at least 12 characters).
 5. **Apply.** The database starts first, then the three services build. The first build takes 5 to 10 minutes.
 6. When `osun-eduos-api` shows **Live**, open https://osun-eduos-api.onrender.com/health. It should say `{"status":"ok"}`.
-7. Put the web app on Cloudflare Pages (next section), open https://osun-eduos-app.pages.dev and sign in as the Ministry administrator. Choose a new password when asked.
+7. Put the web app on Cloudflare Pages (next section), open https://osun-eduos-app.pages.dev and sign in as the Ministry administrator. Choose a new password when asked, then set up two-step sign-in with an authenticator app (Google Authenticator, Microsoft Authenticator or similar) and keep the recovery codes somewhere safe. Every Ministry administrator and officer does this at their first sign-in.
 8. In Render, open `osun-eduos-api` > *Environment*, **delete** `SEED_ADMIN_NAME`, `SEED_ADMIN_EMAIL` and `SEED_ADMIN_PASSWORD`, and save. They are no longer needed. The administrator is created only once, even if the values stay.
 
 If Render gives a service a different address because the name is taken, update `API_ORIGIN` in `eduos-web/wrangler.toml`, and use the new addresses for the mobile app below.
