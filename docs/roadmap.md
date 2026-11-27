@@ -37,6 +37,15 @@ Timelines are indicative and depend on funding, team size and Ministry prioritie
 
 Every screen in the original prototype (osun-eduos.pages.dev) now exists in the product: school profiles with maps, results submission tracking and class analysis, editable grading, exam timetables, class allocation, verifiable report cards, staff register and clock-in, training and subject-shortage figures, minimum infrastructure standards with follow-up, enrolment ratios from population estimates, LGA comparisons over terms, and a fuller parent portal.
 
+## Security before the pilot (done)
+
+- Two-step sign-in with an authenticator app, required for Ministry administrators and officers and optional for everyone else, with recovery codes and administrator resets.
+- Passwords of at least 12 characters, checked against common and leaked passwords.
+- Access tokens signed with ES256; only the API holds the private key.
+- Content-Security-Policy and HTTPS-only headers on the web app; CodeQL code scanning and Dependabot on every repository.
+
+Still needed before real data goes in: a data protection impact assessment, a retention policy and a named data protection officer under the Nigeria Data Protection Act 2023, and a decision on where the database is hosted.
+
 ## Phase 4 · State-wide rollout
 
 - Training for teachers, school administrators and LGA officers.
