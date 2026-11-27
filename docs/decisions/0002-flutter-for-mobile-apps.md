@@ -10,7 +10,7 @@ Teachers need an offline app for the register and score entry, and later inspect
 
 ## Decision
 
-The teacher app is built **once, in Flutter (Dart)**, for both Android and iOS, in one repository: [eduos-mobile](https://github.com/Osun-eduos/eduos-mobile). `eduos-android` was renamed to `eduos-mobile`, and `eduos-ios` is archived.
+The teacher app is built **once, in Flutter (Dart)**, for both Android and iOS, in one repository: [eduos-mobile](https://github.com/Osun-eduos/eduos-mobile). `eduos-android` was renamed to `eduos-mobile`. `eduos-ios` was archived and then deleted in November 2026, as it never held code.
 
 | Concern | Choice |
 | --- | --- |

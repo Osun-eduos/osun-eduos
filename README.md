@@ -26,11 +26,13 @@ In many schools, examination results are still compiled by hand. Teachers calcul
 | Repository | What it is | Status |
 | --- | --- | --- |
 | **osun-eduos** (this one) | Overview, architecture, roadmap, project-wide decisions | Active |
-| [eduos-web](https://github.com/Osun-eduos/eduos-web) | Web app for the Ministry, schools, teachers and parents | Clickable prototype |
-| [eduos-api](https://github.com/Osun-eduos/eduos-api) | Application API, database and sync service | Planned |
-| [eduos-mobile](https://github.com/Osun-eduos/eduos-mobile) | Teacher app for Android and iOS (Flutter): offline register and score entry | Active |
-| [eduos-sync](https://github.com/Osun-eduos/eduos-sync) | Sync service for the mobile app (Go) | Active |
+| [eduos-web](https://github.com/Osun-eduos/eduos-web) | Web app for the Ministry, schools, teachers and parents, and the clickable prototype | Built, pilot next |
+| [eduos-api](https://github.com/Osun-eduos/eduos-api) | API and database (TypeScript, NestJS, PostgreSQL) | Built, pilot next |
+| [eduos-mobile](https://github.com/Osun-eduos/eduos-mobile) | App for parents, teachers, inspectors and LGA officers on Android and iOS (Flutter): offline register, scores and inspections | Built, pilot next |
+| [eduos-sync](https://github.com/Osun-eduos/eduos-sync) | Sync service for the mobile app (Go) | Built, pilot next |
 | [.github](https://github.com/Osun-eduos/.github) | Organisation profile and shared community files | Active |
+
+The mobile app started as two native apps, `eduos-android` and `eduos-ios`. They were replaced by the single Flutter app in eduos-mobile; see [decision 0002](docs/decisions/0002-flutter-for-mobile-apps.md).
 
 ## Documents
 
@@ -42,6 +44,8 @@ In many schools, examination results are still compiled by hand. Teachers calcul
 ## Get involved
 
 Read the [contributing guide](https://github.com/Osun-eduos/.github/blob/main/CONTRIBUTING.md). Questions and proposals that affect more than one repository start as an issue here.
+
+Every change reaches `main` through a reviewed pull request with passing checks, and is squash-merged. The branch rules are kept in [`scripts/protect-main.sh`](scripts/protect-main.sh) so they can be applied again to every repository. Report security problems privately, as described in the [security policy](https://github.com/Osun-eduos/.github/blob/main/SECURITY.md).
 
 ## Licence
 
