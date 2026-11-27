@@ -33,16 +33,16 @@ Decisions are recorded in [docs/decisions](decisions/): [0001 · Programming lan
 
 | Layer | Technology | Status |
 | --- | --- | --- |
-| Web front end | TypeScript, React, Vite | **Built:** accounts, schools, students, classes, transfers. Installable PWA planned. |
-| Mobile app | Flutter (Dart), one codebase for Android and iOS | **Built:** teacher app with offline register and score entry, encrypted SQLite (SQLCipher), ordered sync. See [decision 0002](decisions/0002-flutter-for-mobile-apps.md). |
-| Core API | TypeScript, NestJS, Prisma | **Built:** REST/JSON. Accounts, schools, sessions, classes, students, transfers. |
+| Web front end | TypeScript, React, Vite | **Built:** every module, from accounts, schools and students to results, staff, inspections, dashboards and the parent portal. Installable PWA planned. |
+| Mobile app | Flutter (Dart), one codebase for Android and iOS | **Built:** app for parents, teachers, inspectors and LGA officers with offline register, score entry and inspections, encrypted SQLite (SQLCipher), ordered sync. See [decision 0002](decisions/0002-flutter-for-mobile-apps.md). |
+| Core API | TypeScript, NestJS, Prisma | **Built:** REST/JSON for every module: accounts, schools, sessions, classes, students, transfers, attendance, results and grading, staff, inspections, indicators, notices and notifications. |
 | Sync service | Go | **Built:** snapshot for offline work, exactly-once uploads applied through the core API. See [decision 0001](decisions/0001-languages-and-services.md). |
-| Job workers | Go | Planned. Results processing, report cards, SMS sending. |
+| Job workers | Go | Planned. Results, report cards and texts are handled inside the core API for now; separate workers only if the load needs them. |
 | Database | PostgreSQL 16 (PostGIS later) | **Built.** One database shared by all services; the schema and migrations live in `eduos-api`. |
-| Analytics | SQL views and materialised views in PostgreSQL first; a Go service or a warehouse only if needed | Planned. Ministry dashboards and indicator reports. |
-| Messaging | Pluggable SMS gateway, push notifications | Parents without smartphones get SMS only |
+| Analytics | SQL in PostgreSQL first; a Go service or a warehouse only if needed | **Built:** Ministry and LGA dashboards and indicator reports, computed by the core API. |
+| Messaging | Pluggable SMS gateway, push notifications | **Built:** SMS through KudiSMS, an in-app inbox, and push through Firebase once it is set up. Parents without smartphones get SMS only. |
 | Auth | Built into `eduos-api`: Argon2id passwords, short-lived JWT access tokens, rotating refresh tokens | **Built.** Roles: Ministry administrator, Ministry officer, LGA education officer and school inspector (read only, limited to an LGA), school administrator, teacher, parent. Go services accept the same tokens. |
-| Hosting | Containers (Docker), state data centre or a Nigerian cloud region | Static front end can sit on a CDN. |
+| Hosting | Web app on Cloudflare Pages; API, sync service and database in containers (Docker) | Web app and prototype on Cloudflare Pages. Host for the API and database to be decided; see [deployment](deployment.md). |
 
 ## Repositories
 
@@ -51,7 +51,7 @@ Decisions are recorded in [docs/decisions](decisions/): [0001 · Programming lan
 | [eduos-web](https://github.com/Osun-eduos/eduos-web) | Web app for the Ministry, schools, teachers and parents, and the clickable prototype |
 | [eduos-api](https://github.com/Osun-eduos/eduos-api) | Core API (TypeScript) and the database schema and migrations for every service |
 | [eduos-sync](https://github.com/Osun-eduos/eduos-sync) | Sync service for the mobile apps (Go) |
-| [eduos-mobile](https://github.com/Osun-eduos/eduos-mobile) | Offline-first Flutter app for teachers (and later inspectors), for Android and iOS |
+| [eduos-mobile](https://github.com/Osun-eduos/eduos-mobile) | Offline-first Flutter app for parents, teachers, inspectors and LGA officers, for Android and iOS |
 | [osun-eduos](https://github.com/Osun-eduos/osun-eduos) | Architecture, roadmap and project-wide decisions |
 | [.github](https://github.com/Osun-eduos/.github) | Organisation profile and shared community files |
 
